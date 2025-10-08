@@ -13,5 +13,4 @@ const employeeSchema = new mongoose.Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-// ✅ IMPORTANT: default export of the model
 module.exports = mongoose.model("Employee", employeeSchema);
