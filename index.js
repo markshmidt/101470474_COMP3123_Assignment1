@@ -1,14 +1,10 @@
-// index.js
-require("dotenv").config();
+require("dotenv").config();       
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cors = require("cors");
 
-// use your single routes file:
 const apiRoutes = require("./src/routes");
-
-// your error handler is at src/errorHandler.js (not middleware/)
 const { notFound, onError } = require("./src/errorHandler");
 
 const app = express();
@@ -16,13 +12,13 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
-// simple health
+//health check
 app.get("/", (_req, res) => res.json({ status: "ok" }));
 
-// mount all assignment endpoints under /api/v1
+// all apis mounted to /api/v1/
 app.use("/api/v1", apiRoutes);
 
-// DB health (nice to have)
+// checking db connection
 app.get("/health/db", async (_req, res) => {
   try {
     await mongoose.connection.db.admin().command({ ping: 1 });
@@ -40,20 +36,20 @@ app.use(onError);
 
 // boot
 const PORT = process.env.PORT || 3000;
-const URI = (process.env.MONGODB_URI || "").trim();
+const URI  = (process.env.MONGODB_URI || "").trim();
 
 (async () => {
   try {
     if (URI) {
       mongoose.set("strictQuery", true);
       await mongoose.connect(URI, { autoIndex: true });
-      console.log("✅ MongoDB connected");
+      console.log("MongoDB connected");
     } else {
-      console.warn("⚠️  MONGODB_URI not set; starting without DB");
+      console.warn("MONGODB_URI not set; starting without DB");
     }
-    app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));
+    app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
   } catch (e) {
-    console.error("❌ Failed to start:", e.message);
+    console.error("Failed to start:", e.message);
     process.exit(1);
   }
 })();

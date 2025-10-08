@@ -1,0 +1,304 @@
+{
+	"info": {
+		"_postman_id": "c6675932-925c-4779-842c-314264815058",
+		"name": "COMP3123 Assignment 1 — API Collection",
+		"description": "Postman collection for COMP3123 Assignment 1 (Users & Employees).\n\nVariables:\n- {{baseUrl}}: defaults to http://localhost:3000\n- {{token}}: set automatically after successful Login (via Tests script)\n\nUsage:\n1) Run \"User → Login\" to get a token (after you \"User → Signup\" once).\n2) Then call the Employee endpoints; Authorization header is preconfigured to use {{token}}.\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47206247"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "Health: App",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health: DB",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/health/db",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"health",
+								"db"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"jane\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"secret12\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/user/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Save JWT token from response to {{token}}",
+									"let json;",
+									"try { json = pm.response.json(); } catch (e) {",
+									"  pm.test('Response is JSON', function(){ pm.expect.fail('No JSON body'); });",
+									"}",
+									"if (json && json.jwt_token) {",
+									"  pm.environment.set('token', json.jwt_token);",
+									"  pm.test('Saved jwt_token to {{token}}', function(){ pm.expect(json.jwt_token).to.be.a('string'); });",
+									"} else {",
+									"  pm.test('jwt_token not found', function(){ pm.expect.fail('Missing jwt_token in response'); });",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"jane@example.com\",\n  \"password\": \"secret12\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/user/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employees",
+			"item": [
+				{
+					"name": "List Employees",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/emp/employees",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"emp",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"first_name\": \"Alice\",\n  \"last_name\": \"Johnson\",\n  \"email\": \"alice.johnson@example.com\",\n  \"position\": \"Designer\",\n  \"salary\": 85000,\n  \"date_of_joining\": \"2023-08-10T00:00:00.000Z\",\n  \"department\": \"Design\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/emp/employees",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"emp",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employee by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/emp/employees/:eid",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"emp",
+								"employees",
+								":eid"
+							],
+							"variable": [
+								{
+									"key": "eid",
+									"value": "PUT_EMPLOYEE_ID_HERE"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Employee",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"position\": \"Senior Designer\",\n  \"salary\": 95000\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/emp/employees/:eid",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"emp",
+								"employees",
+								":eid"
+							],
+							"variable": [
+								{
+									"key": "eid",
+									"value": "PUT_EMPLOYEE_ID_HERE"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Employee (204)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/emp/employees?eid={{eid}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"emp",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "eid",
+									"value": "{{eid}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "eid",
+									"value": "PUT_EMPLOYEE_ID_HERE"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
