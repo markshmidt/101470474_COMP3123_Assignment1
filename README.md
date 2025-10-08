@@ -52,9 +52,9 @@ The backend supports CRUD operations for Employees and Signup/Login for Users, f
 npm install
 ```
 
-2) **Environment variables** (`.env` in project root)
+2) **Environment variables** (check `.env` in project root)
 ```bash
-MONGODB_URI=mongodb+srv://comp3123user:passwordqwerty1234@comp3123user.i9t2llm.mongodb.net/comp3123user?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://USER:PASSWORD@comp3123user.i9t2llm.mongodb.net/comp3123user?retryWrites=true&w=majority
 PORT=3000
 JWT_SECRET=dev-secret-change-me
 ```
