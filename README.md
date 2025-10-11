@@ -37,7 +37,7 @@ The backend supports CRUD operations for Employees and Signup/Login for Users, f
 │  ├─ controllers.js
 │  ├─ validators.js
 │  ├─ errorHandler.js
-│  └─ auth.js                  # (optional JWT middleware)
+│  └─ auth.js          
 └─ models/
    ├─ User.js
    └─ Employee.js
@@ -54,9 +54,9 @@ npm install
 
 2) **Environment variables** (check `.env` in project root)
 ```bash
-MONGODB_URI=mongodb+srv://USER:PASSWORD@comp3123user.i9t2llm.mongodb.net/comp3123user?retryWrites=true&w=majority
-PORT=3000
-JWT_SECRET=dev-secret-change-me
+MONGODB_URI
+PORT
+JWT_SECRET
 ```
 
 3) **Run**
